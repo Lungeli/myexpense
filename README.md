@@ -33,3 +33,10 @@ To get started with MyExpense, follow these steps:
 4. Start the Client
     ```sh
     yarn start
+
+ 5. Run the Server
+    ```sh
+    cd server
+    node index.js
+    ```
+    
