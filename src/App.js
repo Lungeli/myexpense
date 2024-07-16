@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
   const [name, setName] = useState('');
   const [datetime, setDatetime] = useState('');
   const [description, setDescription] = useState('');
+  const [transactions, setTransactions] = useState('');
+  useEffect(() => {
+    getTransactions().then(setTransactions);
+  }, []);
+
+  async function getTransactions() {
+    const url = `${process.env.REACT_APP_API_URL}/transactions`;
+    const response = await fetch(url);
+    return await response.json();
+  }
 
   function addNewTransaction(ev) {
     ev.preventDefault();
@@ -61,40 +71,24 @@ function App() {
         />
       </div>
       <button type='submit'>Add New Transaction</button>
+  
     </form>
     <div className='transactions'>
+    {transactions.length>0 && transactions.map(transaction=>(
       <div className='transaction'>
-        <div className='left'>
-          <div className='name'>New Mouse Pad</div>
-          <div className='description'> Need to replace old mat</div>
-        </div>
-        <div className='right'>
-          <div className='price red'>- Rs 500</div>
-          <div className='datetime'>2024-04-12 15:45</div>
-        </div>
+      <div className='left'>
+        <div className='name'>{transaction.name}</div>
+        <div className='description'>{transaction.description}</div>
       </div>
+      <div className='right'>
+        <div className={'price ' + (transaction.price<0 ? 'red':'green') }>
+            {transaction.price}</div>
+        <div className='datetime'>2024-04-12 15:45</div>
+      </div>
+    </div>
+    )) }
 
-      <div className='transaction'>
-        <div className='left'>
-          <div className='name'>Gig Income</div>
-          <div className='description'> Personal gig income</div>
-        </div>
-        <div className='right'>
-          <div className='price green'>+ Rs 1000</div>
-          <div className='datetime'>2024-04-12 15:45</div>
-        </div>
-      </div>
-
-      <div className='transaction'>
-        <div className='left'>
-          <div className='name'>Keyboard</div>
-          <div className='description'> Old keyboard was not working</div>
-        </div>
-        <div className='right'>
-          <div className='price red'>- Rs 1000</div>
-          <div className='datetime'>2024-04-12 15:45</div>
-        </div>
-      </div>
+      
     </div>
   </main>
   );
