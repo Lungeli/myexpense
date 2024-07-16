@@ -44,10 +44,14 @@ function App() {
         console.error('Error:', error);
     });
 }
+let balance = 0;
+for(const transaction of transactions){
+  balance = balance + transaction.price;
+}
 
   return (
    <main>
-    <h1>Rs 4000<span>.00</span></h1>
+    <h1>Rs {balance}<span>.00</span></h1>
     <form onSubmit={addNewTransaction}>
       <div className='basic'>
          <input 
